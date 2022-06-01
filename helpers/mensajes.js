@@ -4,7 +4,7 @@ const mostrarMenu=()=>{
     return new Promise((resolve)=>{
         console.clear();
         console.log("========================".green);
-        console.log("Seleccione una opción".green);
+        console.log("Seleccione una opción".white);
         console.log("========================".green);
     
         console.log(`${'1.'.green} Crear tareas`);

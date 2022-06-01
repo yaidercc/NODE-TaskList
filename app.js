@@ -1,17 +1,51 @@
+// Resources
 require("colors");
-const {mostrarMenu, pausa}=require("./helpers/mensajes");
+const {inquirerMenu, pausa, leerInput, listadoTareasBorrar,mensajeConfirmacion} =require("./helpers/inquirer");
+const { saveinfo,readDB } = require("./helpers/DML");
+const Tareas = require("./models/tareas");
+
+// Main code
 const main =async()=>{
     console.clear();
-    console.log("Hola mundo");
-
     let opt='';
-    while(opt!=='0'){
-        opt=await mostrarMenu();
-        opt=='0'??await pausa()
-    }
+    const tareas = new Tareas();
+    const readData = readDB();
     
+    if(readData){
+        tareas.importTaskFromArray(readData);
+    }
+    do{
+        opt=await inquirerMenu();
+        switch (opt) 
+        {
+            case '1':
+                // crear opcion
+                const data = await leerInput("Descripcion: ");
+                tareas.crearTarea(data)
+                break;
+            case '2':
+                tareas.listadoCompleto();
+                break;
+            case '3':
+                tareas.listarPendientesCompletadas();
+                break;
+            case '4':
+                tareas.listarPendientesCompletadas(false);
+                break;
+            case '6':
+                const id = await listadoTareasBorrar(tareas.listadoArr);
+                if (id!=0) {
+                    if(await mensajeConfirmacion()) {
+                        tareas.eliminarTarea(id);
+                        console.log("tarea eliminada")
+                    }
+                }
+                break;
+        }
+        saveinfo(tareas.listadoArr);
+        await pausa();
         
-    // pausa();
+    }while(opt!=='0');
 }
 
 main();
