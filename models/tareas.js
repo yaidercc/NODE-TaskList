@@ -65,6 +65,20 @@ class Tareas{
             delete this._listado[id];
         }
     }
+    toggleCompleteTask(ids=[]){
+        ids.forEach((item)=>{
+            const tarea=this._listado[item];
+            if(!tarea.completadoEn){
+                tarea.completadoEn= new Date().toISOString();
+            }
+        });
+
+        this.listadoArr.forEach(item=>{
+            if(!ids.includes(item.id)){
+                this._listado[item.id].completadoEn=null;
+            }
+        })
+    }
 
 
 }
