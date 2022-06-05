@@ -1,5 +1,6 @@
 //Resources
 const inquirer=require("inquirer");
+const Tarea = require("../models/tarea");
 require("colors");
 
 const questions=[
@@ -132,10 +133,34 @@ const mensajeConfirmacion= async()=>{
     return asnwer;
 }
 
+const mostrarListadoChecklist = async(tareas = [])=>{
+    const choices = tareas.map((item,key)=>{
+        const idx=`${key+1}.`.green;
+        return{
+            value: item.id,
+            name: `${idx} ${item.desc}`,
+            checked:(item.completadoEn) ? true : false
+        }
+    });
+    const preguntas=[
+        {
+            type:'checkbox',
+            name:'ids',
+            message:'Selecciones',
+            choices
+        }
+    ];
+
+    const {ids} = await inquirer.prompt(preguntas);
+
+    return ids;
+}
+
 module.exports={
     inquirerMenu,
     pausa,
     leerInput,
     listadoTareasBorrar,
-    mensajeConfirmacion
+    mensajeConfirmacion,
+    mostrarListadoChecklist
 }

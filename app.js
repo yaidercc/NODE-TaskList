@@ -1,6 +1,6 @@
 // Resources
 require("colors");
-const {inquirerMenu, pausa, leerInput, listadoTareasBorrar,mensajeConfirmacion} =require("./helpers/inquirer");
+const {inquirerMenu, pausa, leerInput, listadoTareasBorrar,mensajeConfirmacion,mostrarListadoChecklist} =require("./helpers/inquirer");
 const { saveinfo,readDB } = require("./helpers/DML");
 const Tareas = require("./models/tareas");
 
@@ -21,22 +21,26 @@ const main =async()=>{
             case '1':
                 // crear opcion
                 const data = await leerInput("Descripcion: ");
-                tareas.crearTarea(data)
+                tareas.createTask(data)
                 break;
             case '2':
-                tareas.listadoCompleto();
+                tareas.completeList();
                 break;
             case '3':
-                tareas.listarPendientesCompletadas();
+                tareas.listPendingAndCompleteTasks();
                 break;
             case '4':
-                tareas.listarPendientesCompletadas(false);
+                tareas.listPendingAndCompleteTasks(false);
+                break;
+            case '5':
+                const ids=await mostrarListadoChecklist(tareas.listadoArr);
+                console.log(ids);
                 break;
             case '6':
                 const id = await listadoTareasBorrar(tareas.listadoArr);
                 if (id!=0) {
                     if(await mensajeConfirmacion()) {
-                        tareas.eliminarTarea(id);
+                        tareas.deleteTask(id);
                         console.log("tarea eliminada")
                     }
                 }

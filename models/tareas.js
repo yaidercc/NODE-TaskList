@@ -27,14 +27,14 @@ class Tareas{
      * create tasks
      * @param {*} desc task description
      */
-    crearTarea(desc=''){
+    createTask(desc=''){
         const tarea= new Tarea(desc);
         this._listado[tarea.id]=tarea;
     }
     /**
      * List all task
      */
-    listadoCompleto(){
+    completeList(){
         let i=0;
         console.log();
         Object.entries(this._listado).map(([key,item])=>{
@@ -44,7 +44,7 @@ class Tareas{
     /**
      * list done tasks
      */
-    listarPendientesCompletadas(completado = true){
+    listPendingAndCompleteTasks(completado = true){
         let i=0;
         console.log();
         Object.entries(this._listado).map(([key,item])=>{
@@ -55,8 +55,12 @@ class Tareas{
             }
         });
     }
+    /**
+     * delete task of the object tasks
+     * @param {*} id id task
+     */
 
-    eliminarTarea(id=""){
+    deleteTask(id=""){
         if (this._listado[id]){
             delete this._listado[id];
         }
